@@ -1,0 +1,74 @@
+[
+  {
+    "challengeId": "65191d1e9f321ba6780cad7e",
+    "challengeStatus": "ongoing",
+    "category": "Diet",
+    "challengeThumbnail": "https://test.com",
+    "challengeVerificationFrequency": "Everyday",
+    "challengeName": "Lose 1lbs",
+    "challengeStartsAt": "2023-10-07",
+    "challengeEndsAt": "2023-10-13",
+    "challengeParticipantsCount": 29,
+    "challengeTotalDeposit": 3490
+  },
+  {
+    "challengeId": "65191d459f321ba6780cad81",
+    "challengeStatus": "ongoing",
+    "category": "Diet",
+    "challengeThumbnail": "https://test.com",
+    "challengeVerificationFrequency": "Everyday",
+    "challengeName": "Lose 2lbs",
+    "challengeStartsAt": "2023-10-05",
+    "challengeEndsAt": "2023-10-11",
+    "challengeParticipantsCount": 20,
+    "challengeTotalDeposit": 4000
+  },
+  {
+    "challengeId": "65191d909f321ba6780cad87",
+    "challengeStatus": "ongoing",
+    "category": "Diet",
+    "challengeThumbnail": "https://test.com",
+    "challengeVerificationFrequency": "Everyday",
+    "challengeName": "Lose 3lbs",
+    "challengeStartsAt": "2023-09-28",
+    "challengeEndsAt": "2023-10-11",
+    "challengeParticipantsCount": 26,
+    "challengeTotalDeposit": 4200
+  },
+  {
+    "challengeId": "65191dbf9f321ba6780cad8a",
+    "challengeStatus": "ongoing",
+    "category": "Diet",
+    "challengeThumbnail": "https://test.com",
+    "challengeVerificationFrequency": "Everyday",
+    "challengeName": "Lose 4lbs",
+    "challengeStartsAt": "2023-09-27",
+    "challengeEndsAt": "2023-10-10",
+    "challengeParticipantsCount": 25,
+    "challengeTotalDeposit": 4000
+  },
+  {
+    "challengeId": "65191df19f321ba6780cad8d",
+    "challengeStatus": "completed",
+    "category": "Diet",
+    "challengeThumbnail": "https://test.com",
+    "challengeVerificationFrequency": "Everyday",
+    "challengeName": "Lose 5lbs",
+    "challengeStartsAt": "2023-09-23",
+    "challengeEndsAt": "2023-09-29",
+    "challengeParticipantsCount": 31,
+    "challengeTotalDeposit": 6100
+  },
+  {
+    "challengeId": "65191e419f321ba6780cad90",
+    "challengeStatus": "completed",
+    "category": "Diet",
+    "challengeThumbnail": "https://test.com",
+    "challengeVerificationFrequency": "Everyday",
+    "challengeName": "Lose 6lbs",
+    "challengeStartsAt": "2023-09-22",
+    "challengeEndsAt": "2023-09-28",
+    "challengeParticipantsCount": 30,
+    "challengeTotalDeposit": 6000
+  }
+]
