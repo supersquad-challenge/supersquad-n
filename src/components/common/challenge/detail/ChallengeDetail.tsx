@@ -1,6 +1,6 @@
-"use client"
-import { getSingleChallenge } from '@/lib/api/querys/challenge/getSingleChallenge'
-import React, { useContext, useEffect, useState } from 'react'
+'use client';
+import { getSingleChallenge } from '@/lib/api/querys/challenge/getSingleChallenge';
+import React, { useContext, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import Image from 'next/image';
 import { useQuery } from 'react-query';
@@ -20,30 +20,31 @@ import { parseChallengeDesc } from '@/utils/parseDescUtils';
 import ChallengeDesc from '../description/ChallengeDesc';
 
 type Props = {
-  id: string
-}
+  id: string;
+};
 
 const ChallengeDetail = ({ id }: Props) => {
-  const { 
-    statusCode, 
-    loadingState, 
+  const {
+    statusCode,
+    loadingState,
     handleStatusCode,
-    handleLoadingState, 
-    handleModalState } = useContext(WindowContext);
+    handleLoadingState,
+    handleModalState,
+  } = useContext(WindowContext);
   const [isError, setIsError] = useState<boolean>(false);
   const { isLogin } = useContext(AuthContext);
   const router = useRouter();
 
   const { data, error, isLoading } = useQuery({
     queryKey: [`singleChallenge-${id}`],
-    queryFn: async() => {
-      const res = await getSingleChallenge({ challengeId: id })
+    queryFn: async () => {
+      const res = await getSingleChallenge({ challengeId: id });
       const challenge: SingleChallenges = res.challengeInfo;
       return challenge;
     },
     staleTime: 5000,
-    cacheTime: Infinity
-  })
+    cacheTime: Infinity,
+  });
 
   useEffect(() => {
     if (statusCode === 409) {
@@ -51,20 +52,19 @@ const ChallengeDetail = ({ id }: Props) => {
       setTimeout(() => {
         setIsError(false);
         handleStatusCode(undefined);
-      }, 2500)
+      }, 2500);
     }
 
     return () => {
       setIsError(false);
-    }
-  }, [statusCode])
+    };
+  }, [statusCode]);
 
   if (isLoading || data === undefined) {
-    return <Loading />
+    return <Loading />;
   }
 
-  if (!isLoading && (error
-    || data === undefined)) {
+  if (!isLoading && (error || data === undefined)) {
     return <CommonError msg="Fetch failed" />;
   }
 
@@ -75,10 +75,10 @@ const ChallengeDetail = ({ id }: Props) => {
       <ImageContainer>
         <Image
           src="/default/diet_thumbnail.svg"
-          alt='challenge image'
+          alt="challenge image"
           fill
           style={{
-            objectFit: "cover"
+            objectFit: 'cover',
           }}
           priority={true}
         />
@@ -91,73 +91,70 @@ const ChallengeDetail = ({ id }: Props) => {
         />
         <InfoContainer>
           <ChallengeInfo
-            title='Schedule'
-            content={data.challengeStartsAt.length === 0 ? 'None' : `${convertIsoDateToReadable(data.challengeStartsAt)} - ${convertIsoDateToReadable(data.challengeEndsAt)}`}
-            contentColor='#000000'
-            direction='left'
-            shadow='rb'
+            title="Schedule"
+            content={
+              data.challengeStartsAt.length === 0
+                ? 'None'
+                : `${convertIsoDateToReadable(
+                    data.challengeStartsAt,
+                  )} - ${convertIsoDateToReadable(data.challengeEndsAt)}`
+            }
+            contentColor="#000000"
+            direction="left"
+            shadow="rb"
           />
           <ChallengeInfo
-            title='How To'
-            content='Take a picture'
-            contentColor='#000000'
-            direction='right'
-            shadow='rb'
-            />
+            title="How To"
+            content="Take a picture"
+            contentColor="#000000"
+            direction="right"
+            shadow="rb"
+          />
           <ChallengeInfo
-              title='Complete'
-              content={data.challengeVerificationFrequency}
-              contentColor='#000000'
-              direction='left'
-              shadow='rb'
-            />
+            title="Complete"
+            content={data.challengeVerificationFrequency}
+            contentColor="#000000"
+            direction="left"
+            shadow="rb"
+          />
           <ChallengeInfo
-            title='Crypto Yield +'
+            title="Crypto Yield +"
             content={`${data.cryptoYield}%`}
-            contentColor='#8A01D7'
-            direction='right'
-            shadow='rb'
+            contentColor="#8A01D7"
+            direction="right"
+            shadow="rb"
           />
         </InfoContainer>
         {_desc.map((el: ParsedDesc, idx: number) => {
-          return (
-            <ChallengeDesc
-              key={idx}
-              block={el}
-            />
-        )})}
+          return <ChallengeDesc key={idx} block={el} />;
+        })}
         <ButtonContainer>
           <FillButton
-            title='I am in!'
+            title="I am in!"
             fontSize={18}
-            color='#ffffff'
-            backgroundcolor='#000000'
+            color="#ffffff"
+            backgroundcolor="#000000"
             onClickHandler={() => {
               if (isLogin) {
-                handleModalState('payments')
+                handleModalState('payments');
               } else {
                 handleLoadingState(true);
                 setTimeout(() => {
                   handleLoadingState(false);
-                  router.push('/signup')
+                  router.push('/signup');
                 }, 500);
               }
             }}
           />
         </ButtonContainer>
-        {loadingState && (
-          <Loading />
-        )}
+        {loadingState && <Loading />}
         {isError && statusCode === 409 && (
-          <PopupModal
-            title='Already Registered!'
-          />
+          <PopupModal title="Already Registered!" />
         )}
       </ContentInner>
     </div>
-  )
-}
-
+  );
+};
 
 const ImageContainer = styled.section`
   width: 100%;
@@ -169,12 +166,12 @@ const ImageContainer = styled.section`
   @media (max-width: 370px) {
     height: 220px;
   }
-`
+`;
 
 const ContentInner = styled.section`
   width: 90%;
   margin: 0 auto;
-`
+`;
 
 const InfoContainer = styled.div`
   margin-top: 10px;
@@ -183,7 +180,7 @@ const InfoContainer = styled.div`
   flex-wrap: wrap;
   flex-direction: row;
   justify-content: space-between;
-`
+`;
 
 const ButtonContainer = styled.footer`
   max-width: 600px;
@@ -197,6 +194,6 @@ const ButtonContainer = styled.footer`
     cursor: pointer;
     border: 1px solid #000000;
   }
-`
+`;
 
-export default ChallengeDetail
+export default ChallengeDetail;
