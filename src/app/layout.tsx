@@ -11,6 +11,7 @@ import { WagmiConfig, sepolia } from 'wagmi';
 import { goerli, mainnet, polygon, polygonMumbai } from 'wagmi/chains';
 import GlobalStyle from '@/styles/global';
 import { RecoilRoot } from 'recoil';
+import { NeoWalletProvider } from '../context/NeoLine';
 
 const PROJECT_ID = process.env.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID || '';
 
@@ -44,17 +45,19 @@ export default function RootLayout({
         <QueryClientProvider client={client}>
           <WagmiConfig config={wagmiConfig}>
             <RecoilRoot>
-              <AuthProvider>
-                <WindowProvider>
-                  <GlobalStyle />
-                  <StyledComponentsRegistry>
-                    <Layout>
-                      {children}
-                      <GoogleAnalytics />
-                    </Layout>
-                  </StyledComponentsRegistry>
-                </WindowProvider>
-              </AuthProvider>
+              <NeoWalletProvider>
+                <AuthProvider>
+                  <WindowProvider>
+                    <GlobalStyle />
+                    <StyledComponentsRegistry>
+                      <Layout>
+                        {children}
+                        <GoogleAnalytics />
+                      </Layout>
+                    </StyledComponentsRegistry>
+                  </WindowProvider>
+                </AuthProvider>
+              </NeoWalletProvider>
             </RecoilRoot>
           </WagmiConfig>
         </QueryClientProvider>

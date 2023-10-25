@@ -12,114 +12,114 @@ import { AuthContext } from '@/context/auth';
 
 type Props = {
   id: string;
-}
+};
 
 const SelectPaymentModal = ({ id }: Props) => {
   const router = useRouter();
   const [isError, setIsError] = useState<boolean>(false);
   const [paymentMethod, setPaymentMethod] = useState<string>('crypto');
   const { userId } = useContext(AuthContext);
-  
-  const { 
-    modalState, 
+
+  const {
+    modalState,
     statusCode,
     handleLoadingState,
     handleStatusCode,
-    handleModalState } = useContext(WindowContext)
-  
+    handleModalState,
+  } = useContext(WindowContext);
+
   return (
-    <BaseModal 
+    <BaseModal
       deletePath={undefined}
       title="You are paying with"
-      show={modalState === 'payments' ? true : false}>
-      <BoxContainer 
+      show={modalState === 'payments' ? true : false}
+    >
+      <BoxContainer
         onClick={() => {
-          setPaymentMethod('crypto')
+          setPaymentMethod('crypto');
         }}
       >
         <BaseCheckbox
-          title='a crypto wallet'
-          subTitle='Deposit $USDC to enforce your goals'
+          title="a crypto wallet"
+          subTitle="Deposit $USDT to enforce your goals"
           isActive={paymentMethod === 'crypto' ? true : false}
         />
       </BoxContainer>
       <BoxContainer
         onClick={() => {
-          setPaymentMethod('free')
+          setPaymentMethod('free');
         }}
       >
         <BaseCheckbox
-          title='free trial'
-          subTitle='You can join this challenge with free trial'
+          title="free trial"
+          subTitle="You can join this challenge with free trial"
           isActive={paymentMethod === 'free' ? true : false}
         />
-        </BoxContainer>
-        {paymentMethod === 'crypto' && (
-          !localStorage.getItem('isWalletConnected') ? (
-            <Link href={'/signup/connect'}>
-              <MsgContainer $color={'red'}>
-                wallet not connected
-              </MsgContainer>
-            </Link>
-          ) : (
-          <MsgContainer $color={'blue'}>
-            wallet connected
-          </MsgContainer>
-          ))}
+      </BoxContainer>
+      {paymentMethod === 'crypto' &&
+        (!localStorage.getItem('isWalletConnected') ? (
+          <Link href={'/signup/connect'}>
+            <MsgContainer $color={'red'}>wallet not connected</MsgContainer>
+          </Link>
+        ) : (
+          <MsgContainer $color={'blue'}>wallet connected</MsgContainer>
+        ))}
       <ButtonContainer>
-        <FillButton 
-          title={'Go On'} 
-          onClickHandler={async() => {
-            if (paymentMethod.length === 0)
-              return ;
+        <FillButton
+          title={'Go On'}
+          onClickHandler={async () => {
+            if (paymentMethod.length === 0) return;
             if (paymentMethod === 'free') {
               handleLoadingState(true);
               if (userId) {
                 const res = await setChallenge({
                   userId: userId,
-                  challengeId: id
-              })
-              handleStatusCode(res?.status);
-              handleLoadingState(false);
-              if (res?.status === 409 || statusCode === 409) {
-                const userChallengeId = res?.data.userChallengeId;
-                setTimeout(() => {
-                  router.push(`/challenge/my/detail/${userChallengeId}?state=my`)
-                }, 2500)
-              }
+                  challengeId: id,
+                });
+                handleStatusCode(res?.status);
+                handleLoadingState(false);
+                if (res?.status === 409 || statusCode === 409) {
+                  const userChallengeId = res?.data.userChallengeId;
+                  setTimeout(() => {
+                    router.push(
+                      `/challenge/my/detail/${userChallengeId}?state=my`,
+                    );
+                  }, 2500);
+                }
 
-              if (res?.status === 200 || statusCode === 200) {
-                const userChallengeId = res?.data.userChallengeId;
-                handleModalState('Success');
+                if (res?.status === 200 || statusCode === 200) {
+                  const userChallengeId = res?.data.userChallengeId;
+                  handleModalState('Success');
 
-                setTimeout(() => {
-                  handleModalState(undefined);
-                  router.push(`/challenge/my/detail/${userChallengeId}?state=my`);
-                }, 3000)
+                  setTimeout(() => {
+                    handleModalState(undefined);
+                    router.push(
+                      `/challenge/my/detail/${userChallengeId}?state=my`,
+                    );
+                  }, 3000);
+                }
               }
+              return;
             }
-            return ;
-          }
-          if (!localStorage.getItem('isWalletConnected') && paymentMethod === 'crypto') {
-            setIsError(true);
-            setTimeout(() => {
-              setIsError(false);
-              router.push('/signup/connect');
-            }, 3000)
-          } else {
-            handleModalState('deposit')
-          }
-        }}
-        color={'#ffffff'}
-        fontSize={17} 
-        backgroundcolor={'#000000'}          
-      />
-      </ButtonContainer>
-      {isError && (
-        <PopupModal
-          title='Move to Wallet Connect'
+            if (
+              !localStorage.getItem('isWalletConnected') &&
+              paymentMethod === 'crypto'
+            ) {
+              setIsError(true);
+              setTimeout(() => {
+                setIsError(false);
+                router.push('/signup/connect');
+              }, 3000);
+            } else {
+              handleModalState('deposit');
+            }
+          }}
+          color={'#ffffff'}
+          fontSize={17}
+          backgroundcolor={'#000000'}
         />
-      )}
+      </ButtonContainer>
+      {isError && <PopupModal title="Move to Wallet Connect" />}
     </BaseModal>
   );
 };
@@ -131,7 +131,7 @@ const BoxContainer = styled.div`
   &:hover {
     cursor: pointer;
   }
-`
+`;
 
 const ButtonContainer = styled.div`
   width: 90%;
@@ -148,10 +148,10 @@ const ButtonContainer = styled.div`
   &:hover {
     border: 1px solid #000000;
   }
-`
+`;
 
 const MsgContainer = styled.div<{
-  $color: string
+  $color: string;
 }>`
   color: ${(props) => props.$color};
   font-size: 12px;
@@ -160,7 +160,6 @@ const MsgContainer = styled.div<{
   right: 10%;
   text-decoration: underline;
   text-align: right;
-`
+`;
 
 export default SelectPaymentModal;
-
