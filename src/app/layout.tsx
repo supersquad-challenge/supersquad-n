@@ -12,6 +12,7 @@ import { goerli, mainnet, polygon, polygonMumbai } from 'wagmi/chains';
 import GlobalStyle from '@/styles/global';
 import { RecoilRoot } from 'recoil';
 import { NeoWalletProvider } from '../context/NeoLine';
+import { neoevm } from '@/context/neoevm';
 
 const PROJECT_ID = process.env.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID || '';
 
@@ -22,7 +23,7 @@ const metadata = {
   icons: ['/src/app/favicon.ico'],
 };
 
-const chains = [mainnet, goerli, sepolia, polygon, polygonMumbai];
+const chains = [mainnet, goerli, sepolia, polygon, polygonMumbai, neoevm];
 
 const wagmiConfig = defaultWagmiConfig({
   chains,

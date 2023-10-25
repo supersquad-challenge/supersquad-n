@@ -1,4 +1,4 @@
-import dotenv from 'dotenv'
+import dotenv from 'dotenv';
 import { MetaMaskInpageProvider } from '@metamask/providers';
 import { Ethereum } from '../../../@types/ethereum';
 const convert = require('ethereum-unit-converter');
@@ -6,19 +6,44 @@ const convert = require('ethereum-unit-converter');
 type Props = {
   to: string;
   value: number;
-}
+};
 
 dotenv.config();
-const changeChain = async() => {
+const changeChain = async () => {
   let res;
   const ethereum = window.ethereum as Ethereum | undefined;
 
-  function handleChainChanged(chainId = '11155111') {
+  function handleChainChanged(chainId = '2970385') {
     window.location.reload();
   }
 
   if (ethereum) {
     const chainId = await ethereum.request({ method: 'eth_chainId' });
+    if (chainId !== '0x2D5311') {
+      // 0x89 is 137 in hexadecimal
+      try {
+        await ethereum.request({
+          method: 'wallet_addEthereumChain',
+          params: [
+            {
+              chainId: '0x2D5311',
+              chainName: 'NeoEVM Chain',
+              nativeCurrency: {
+                name: 'GAS',
+                symbol: 'GAS',
+                decimals: 18,
+              },
+              rpcUrls: ['https://evm.ngd.network:32332'],
+              blockExplorerUrls: ['https://evm.ngd.network'],
+            },
+          ],
+        });
+        return true;
+      } catch (addError) {
+        console.error(addError);
+        return false;
+      }
+    }
   }
 
   if (ethereum && ethereum.on) {
@@ -28,18 +53,18 @@ const changeChain = async() => {
   if (ethereum) {
     res = await ethereum.request({ method: 'eth_chainId' });
   }
-  
-  return res === '11155111' ? true : false;
-}
+
+  return res === '2970385' ? true : false;
+};
 
 const transfer = async ({ to, value }: Props) => {
-  const result = convert(value, 'ether')
+  const result = convert(value, 'ether');
   const chainIdRes = changeChain();
   if (!chainIdRes) {
     return {
       status: false,
       code: 1,
-      msg: 'need to add chainId'
+      msg: 'need to add chainId',
     };
   }
 
@@ -47,29 +72,33 @@ const transfer = async ({ to, value }: Props) => {
   if (ethereum !== undefined) {
     const account = localStorage.getItem('walletAddress');
     if (account !== undefined) {
-      const res = ethereum.request({
-        method: 'eth_sendTransaction',
-        params: [{
-          from: account, 
-          to: to,
-          value: result.wei.toString(16),
-          gasLimit: '0x5028',
-          maxPriorityFeePerGas: '0x3b9aca00', 
-          maxFeePerGas: '0x2540be400',
-        }, 
-        ],
-      }).then((txHash) => {
-        return true;
-      })
-    .catch((error) => {
-      console.error(error)
-      return false;
-    });
-      if (await res === true) {
+      const res = ethereum
+        .request({
+          method: 'eth_sendTransaction',
+          params: [
+            {
+              from: account,
+              to: to,
+              // value: result.wei.toString(16),
+              value: result.wei.toString(16),
+              // gasLimit: '0x5028',
+              // maxPriorityFeePerGas: '0x3b9aca00',
+              // maxFeePerGas: '0x2540be400',
+            },
+          ],
+        })
+        .then((txHash) => {
+          return true;
+        })
+        .catch((error) => {
+          console.error(error);
+          return false;
+        });
+      if ((await res) === true) {
         return {
           status: true,
           code: 0,
-          msg: 'transaction success'
+          msg: 'transaction success',
         };
       }
     }
@@ -77,8 +106,8 @@ const transfer = async ({ to, value }: Props) => {
   return {
     status: false,
     code: 2,
-    msg: 'transaction failed'
+    msg: 'transaction failed',
   };
-}
+};
 
-export default transfer
+export default transfer;
