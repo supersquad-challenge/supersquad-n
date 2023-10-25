@@ -16,7 +16,7 @@ type Props = {
   status: string;
   frequency: string;
   isRegistered: boolean;
-}
+};
 
 const ChallengeItem = ({
   id,
@@ -27,18 +27,21 @@ const ChallengeItem = ({
   status,
   frequency,
 }: Props) => {
-
   return (
     <ItemContainer onClick={() => {}}>
       <Link href={`/challenge/my/detail/${id}?state=my`}>
         <ImageContainer>
           <Image
-            src={isValidUrl(thumbnailUrl) ? thumbnailUrl : "/default/diet_thumbnail.svg"}
-            alt='challenge'
+            src={
+              isValidUrl(thumbnailUrl)
+                ? thumbnailUrl
+                : '/default/diet_thumbnail.svg'
+            }
+            alt="challenge"
             fill
             style={{
-              objectFit: "cover",
-              borderRadius: '6px'
+              objectFit: 'cover',
+              borderRadius: '6px',
             }}
             priority={true}
           />
@@ -46,22 +49,20 @@ const ChallengeItem = ({
       </Link>
       <ChallengeInner>
         <Link href={`/challenge/my/detail/${id}?state=my`}>
-          <ChallengeTitle>
-            {title}
-          </ChallengeTitle>
+          <ChallengeTitle>{title}</ChallengeTitle>
         </Link>
         <MetaContainer>
-          <Duration>
-            {frequency}
-          </Duration>
-          {startDate.length === 0 ? '2 Weeks' : daysBetweenDates(startDate, endDate)}
+          <Duration>{frequency}</Duration>
+          {startDate.length === 0
+            ? '2 Weeks'
+            : daysBetweenDates(startDate, endDate)}
         </MetaContainer>
         <ButtonContainer>
           <BasicButton
             title={status === 'ongoing' ? 'On Going' : 'Complete'}
             onClickHandler={() => {}}
             color={'#ffffff'}
-            backgroundColor={status === 'ongoing' ? "#00F0FF" : "#8A01D7"}
+            backgroundColor={status === 'ongoing' ? '#00F0FF' : '#8A01D7'}
             borderRadius={50}
             fontSize={14}
           />
@@ -69,15 +70,12 @@ const ChallengeItem = ({
       </ChallengeInner>
       <Link href={`/challenge/my/detail/${id}?state=my`}>
         <IconContainer>
-          <BsChevronCompactRight
-            size='32'
-          />
+          <BsChevronCompactRight size="32" />
         </IconContainer>
       </Link>
     </ItemContainer>
   );
 };
-
 
 const ItemContainer = styled.div`
   margin-top: 20px;
@@ -103,8 +101,7 @@ const IconContainer = styled.div`
   @media (max-width: 350px) {
     right: 0px;
   }
-`
-
+`;
 
 const ChallengeInner = styled.div`
   display: flex;
@@ -112,7 +109,7 @@ const ChallengeInner = styled.div`
   align-items: flex-start;
   justify-content: flex-start;
   position: relative;
-  
+
   margin-left: 50px;
 
   @media (max-width: 600px) {
@@ -174,12 +171,12 @@ const Duration = styled.div`
   color: #898989;
 
   &::after {
-    content: "";
+    content: '';
     position: absolute;
     right: 0;
     transform: translateY(-40%);
     top: 50%;
-    border: .5px solid #898989;
+    border: 0.5px solid #898989;
     border-radius: 0.5px;
     height: 80%;
     display: flex;
@@ -190,7 +187,7 @@ const ImageContainer = styled.div`
   width: 90px;
   height: 90px;
   position: relative;
-`
+`;
 
 const ButtonContainer = styled.div`
   width: 180px;
@@ -221,6 +218,6 @@ const MetaContainer = styled.div`
   align-items: center;
   justify-content: center;
   color: #898989;
-`
+`;
 
 export default ChallengeItem;

@@ -16,6 +16,7 @@ import { setChallenge } from '@/lib/api/axios/challenge/setChallenge';
 import { useRouter } from 'next/navigation';
 import { AuthContext } from '@/context/auth';
 import transfer from '@/lib/transactions/transfer';
+// import { ConnectWallet, useSigner } from '@thirdweb-dev/react'
 
 type Props = {
   id: string;

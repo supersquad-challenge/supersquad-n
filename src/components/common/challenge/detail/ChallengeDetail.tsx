@@ -18,6 +18,7 @@ import { AuthContext } from '@/context/auth';
 import { useRouter } from 'next/navigation';
 import { parseChallengeDesc } from '@/utils/parseDescUtils';
 import ChallengeDesc from '../description/ChallengeDesc';
+import { isValidUrl } from '@/utils/urlUtils';
 
 type Props = {
   id: string;
@@ -74,7 +75,12 @@ const ChallengeDetail = ({ id }: Props) => {
     <div>
       <ImageContainer>
         <Image
-          src="/default/diet_thumbnail.svg"
+          // src="/default/diet_thumbnail.svg"
+          src={
+            isValidUrl(data.challengeThumbnail)
+              ? data.challengeThumbnail
+              : '/default/diet_thumbnail.svg'
+          }
           alt="challenge image"
           fill
           style={{

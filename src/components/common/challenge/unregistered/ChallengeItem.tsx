@@ -1,8 +1,8 @@
 import { isValidUrl } from '@/utils/urlUtils';
-import Image from 'next/image'
+import Image from 'next/image';
 import Link from 'next/link';
-import React from 'react'
-import styled from 'styled-components'
+import React from 'react';
+import styled from 'styled-components';
 
 type Props = {
   id: string;
@@ -12,7 +12,7 @@ type Props = {
   participants: number;
   deposit: string;
   isRegistered: boolean;
-}
+};
 
 const UnRegisterItem = ({
   id,
@@ -26,32 +26,30 @@ const UnRegisterItem = ({
       <ChallengeContainer>
         <ImageContainer>
           <Image
-            src={isValidUrl(thumbnailUrl) ? thumbnailUrl : "/default/diet_thumbnail.svg"}
-            alt='challenge'
+            src={
+              isValidUrl(thumbnailUrl)
+                ? thumbnailUrl
+                : '/default/diet_thumbnail.svg'
+            }
+            alt="challenge"
             fill
             style={{
-              objectFit: "cover"
+              objectFit: 'cover',
             }}
             priority={true}
           />
         </ImageContainer>
         <Inner>
-          <ChallengeTitle>
-            {title}
-          </ChallengeTitle>
+          <ChallengeTitle>{title}</ChallengeTitle>
           <ChallengeMetaContainer>
-            <Participants>
-              {participants} participants
-            </Participants>
-            <Deposit>
-              ${deposit}
-            </Deposit>
+            <Participants>{participants} participants</Participants>
+            <Deposit>${deposit}</Deposit>
           </ChallengeMetaContainer>
         </Inner>
       </ChallengeContainer>
     </Link>
-  )
-}
+  );
+};
 
 const ChallengeContainer = styled.div`
   width: 100%;
@@ -59,20 +57,19 @@ const ChallengeContainer = styled.div`
   position: relative;
 
   &::after {
-    content: "";
+    content: '';
     display: block;
     padding-bottom: 100%;
   }
 
-  transition: all .2s ease;
+  transition: all 0.2s ease;
 
   &:hover {
     transform: scale(105%);
     box-shadow: 2px 2px 2px 2px #545454;
     z-index: 99;
   }
-
-`
+`;
 
 const ImageContainer = styled.div`
   width: 100%;
@@ -80,7 +77,7 @@ const ImageContainer = styled.div`
   position: absolute;
   top: 0;
   left: 0;
-`
+`;
 
 const Inner = styled.div`
   width: 100%;
@@ -94,7 +91,7 @@ const Inner = styled.div`
   align-items: flex-start;
   justify-content: flex-end;
   padding-left: 7px;
-`
+`;
 
 const ChallengeTitle = styled.div`
   font-size: 18px;
@@ -110,14 +107,14 @@ const ChallengeTitle = styled.div`
   @media (max-width: 300px) {
     font-size: 14px;
   }
-`
+`;
 
 const ChallengeMetaContainer = styled.div`
   width: 100%;
   display: flex;
   align-items: center;
   justify-content: flex-start;
-`
+`;
 
 const Participants = styled.div`
   font-size: 14px;
@@ -131,7 +128,7 @@ const Participants = styled.div`
   @media (max-width: 300px) {
     font-size: 12px;
   }
-`
+`;
 
 const Deposit = styled.div`
   font-size: 14px;
@@ -145,6 +142,6 @@ const Deposit = styled.div`
   @media (max-width: 300px) {
     font-size: 12px;
   }
-`
+`;
 
-export default UnRegisterItem
+export default UnRegisterItem;
