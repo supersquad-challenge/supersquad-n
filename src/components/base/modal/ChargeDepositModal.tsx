@@ -15,7 +15,7 @@ import OutlineInput from '@/components/base/input/OutlineInput';
 import { setChallenge } from '@/lib/api/axios/challenge/setChallenge';
 import { useRouter } from 'next/navigation';
 import { AuthContext } from '@/context/auth';
-import transfer from '@/lib/transactions/transfer';
+import transferToken from '@/lib/transactions/transfer';
 // import { ConnectWallet, useSigner } from '@thirdweb-dev/react'
 
 type Props = {
@@ -111,7 +111,7 @@ const ChargeDepositModal = ({ id }: Props) => {
         <FillButton
           title={'Charge Deposit'}
           onClickHandler={async () => {
-            const { status, code } = await transfer({
+            const { status, code } = await transferToken({
               to: '0x56d79575215f47f5F84F034D8A8E352f10DA4083',
               value: deposit,
             });
