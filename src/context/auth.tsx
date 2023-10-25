@@ -43,12 +43,12 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
     setUserId(userInfoId);
   }, []);
 
-  const handleLogin = async () => {
-    const res = await login();
-    if (res !== undefined && res.status === 200) {
-      localStorage.setItem('supersquad', res.data.userInfoId);
-    }
-  };
+  // const handleLogin = async () => {
+  //   const res = await login();
+  //   if (res !== undefined && res.status === 200) {
+  //     localStorage.setItem('supersquad', res.data.userInfoId);
+  //   }
+  // };
 
   const contextValue = {
     isLogin,

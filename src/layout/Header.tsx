@@ -1,9 +1,11 @@
-"use client"
-import React, { useEffect, useState } from 'react'
-import AuthSet from '@/components/common/authSet/AuthSet'
-import { usePathname, useRouter } from 'next/navigation'
-import { FiChevronLeft } from 'react-icons/fi'
-import styled from 'styled-components'
+'use client';
+import React, { useEffect, useState } from 'react';
+import AuthSet from '@/components/common/authSet/AuthSet';
+import { usePathname, useRouter } from 'next/navigation';
+import { FiChevronLeft } from 'react-icons/fi';
+import styled from 'styled-components';
+import { useRecoilState } from 'recoil';
+import { isLoginState } from '@/lib/states';
 
 const HeaderContainer = styled.header`
   width: 100%;
@@ -19,7 +21,7 @@ const HeaderContainer = styled.header`
   overflow: hidden;
   z-index: 99;
   background-color: #ffffff;
-  `
+`;
 
 const HeaderInner = styled.section`
   width: 100%;
@@ -28,7 +30,7 @@ const HeaderInner = styled.section`
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-`
+`;
 
 const HeaderTitle = styled.div`
   width: auto;
@@ -41,10 +43,11 @@ const HeaderTitle = styled.div`
   padding-left: 24px;
   font-family: OpenSansBold;
   font-weight: 600;
-`
+`;
 
 const Header = () => {
   const [pageTitle, setPageTitle] = useState<string>('');
+  const [isLogin, setIsLogin] = useRecoilState(isLoginState);
   const router = useRouter();
   const pathname = usePathname();
 
@@ -52,48 +55,45 @@ const Header = () => {
     if (pathname.includes('/detail') || pathname.includes('/mypage'))
       return false;
     return true;
-  }
+  };
 
   useEffect(() => {
-    if (pathname === "/challenge") {
-      setPageTitle("Supersquad")
-    } else if (pathname === "/challenge/my") {
-      setPageTitle("My Challenges")
+    if (pathname === '/challenge') {
+      setPageTitle('Supersquad');
+    } else if (pathname === '/challenge/my') {
+      setPageTitle('My Challenges');
     }
-
-  }, [pathname])
-
+  }, [pathname]);
 
   return (
     <HeaderContainer>
       <HeaderInner>
         {isDetail() ? (
-        <HeaderTitle>
-          {pageTitle}
-        </HeaderTitle>
+          <HeaderTitle
+            onClick={() => {
+              setIsLogin(false);
+            }}
+          >
+            {pageTitle}
+          </HeaderTitle>
         ) : (
-        <ButtonContainer
-          onClick={() => router.back()}
-        >
-          <FiChevronLeft
-            color="#000000"
-            size="24"
-          />
-        </ButtonContainer>
+          <ButtonContainer onClick={() => router.back()}>
+            <FiChevronLeft color="#000000" size="24" />
+          </ButtonContainer>
         )}
         <AuthSet />
       </HeaderInner>
     </HeaderContainer>
-  )
-}
+  );
+};
 
-export default Header
+export default Header;
 
 const ButtonContainer = styled.div`
   width: 40px;
   height: 40px;
   border-radius: 10px;
-  transition: all .2s;
+  transition: all 0.2s;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -103,4 +103,4 @@ const ButtonContainer = styled.div`
     cursor: pointer;
     background-color: #cccccc;
   }
-`
+`;

@@ -1,6 +1,6 @@
-import React, { useContext, useState } from 'react'
-import BaseModal from '@/components/base/modal/BaseModal'
-import { WindowContext } from '@/context/window'
+import React, { useContext, useState } from 'react';
+import BaseModal from '@/components/base/modal/BaseModal';
+import { WindowContext } from '@/context/window';
 import { useQuery } from 'react-query';
 import { getSingleChallenge } from '@/lib/api/querys/challenge/getSingleChallenge';
 import { SingleChallenges } from '@/types/challenge/Challenge';
@@ -19,142 +19,149 @@ import transfer from '@/lib/transactions/transfer';
 
 type Props = {
   id: string;
-}
+};
 
 const ChargeDepositModal = ({ id }: Props) => {
-  const { 
-    statusCode, 
+  const {
+    statusCode,
     modalState,
     handleModalState,
     handleStatusCode,
-    handleLoadingState } = useContext(WindowContext);
+    handleLoadingState,
+  } = useContext(WindowContext);
 
   const { userId } = useContext(AuthContext);
   const router = useRouter();
-  const [ deposit, setDeposit ] = useState<number>(0);
+  const [deposit, setDeposit] = useState<number>(0);
 
   const { data, error, isLoading } = useQuery({
     queryKey: [`singleChallenge-${id}`],
-    queryFn: async() => {
-      const res = await getSingleChallenge({ challengeId: id })
+    queryFn: async () => {
+      const res = await getSingleChallenge({ challengeId: id });
       const challenge: SingleChallenges = res.challengeInfo;
       return challenge;
     },
     staleTime: 5000,
-    cacheTime: Infinity
+    cacheTime: Infinity,
   });
 
-
   if (isLoading || data === undefined) {
-    return <Loading />
+    return <Loading />;
   }
 
-  if (!isLoading && (error
-    || data === undefined)) {
+  if (!isLoading && (error || data === undefined)) {
     return <CommonError msg="Fetch failed" />;
   }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.value.length === 0 || parseInt(e.target.value) < 0)
       setDeposit(0);
-    else if (parseInt(e.target.value) > 300)
-      setDeposit(300);
-    else 
-      setDeposit(parseInt(e.target.value));
+    else if (parseInt(e.target.value) > 300) setDeposit(300);
+    else setDeposit(parseInt(e.target.value));
   };
 
   return (
     <BaseModal
       deletePath={undefined}
       title="Win Your Goal"
-      show={modalState === 'deposit' ? true : false}>
+      show={modalState === 'deposit' ? true : false}
+    >
       <BlockContainer>
-
-      <SmallBlock
-        leftTitle='Period'
-        rightTitle={data.challengeStartsAt.length === 0 ? 'None' : `${convertIsoDateToReadable(data.challengeStartsAt)} - ${convertIsoDateToReadable(data.challengeEndsAt)}`}
-        leftColor="#000000"
-        rightColor="#000000">
-      </SmallBlock>
-      <SmallBlock
-        leftTitle='Frequency'
-        rightTitle={data.challengeVerificationFrequency}
-        leftColor="#000000"
-        rightColor="#000000">
-      </SmallBlock>
-      <SmallBlock
-        leftTitle='Deposit'
-        rightTitle={undefined}
-        leftColor="#000000"
-        rightColor={undefined}>
-          <BaseSlider
-            deposit={deposit}
-            handleDeposit={handleChange}
-          />
-      </SmallBlock>
+        <SmallBlock
+          leftTitle="Period"
+          rightTitle={
+            data.challengeStartsAt.length === 0
+              ? 'None'
+              : `${convertIsoDateToReadable(
+                  data.challengeStartsAt,
+                )} - ${convertIsoDateToReadable(data.challengeEndsAt)}`
+          }
+          leftColor="#000000"
+          rightColor="#000000"
+        ></SmallBlock>
+        <SmallBlock
+          leftTitle="Frequency"
+          rightTitle={data.challengeVerificationFrequency}
+          leftColor="#000000"
+          rightColor="#000000"
+        ></SmallBlock>
+        <SmallBlock
+          leftTitle="Deposit"
+          rightTitle={undefined}
+          leftColor="#000000"
+          rightColor={undefined}
+        >
+          <BaseSlider deposit={deposit} handleDeposit={handleChange} />
+        </SmallBlock>
       </BlockContainer>
       <InputContainer>
         <OutlineInput
-          placeholder='$USDT'
+          placeholder="$USDT"
           updateInput={handleChange}
           submitInput={() => {}}
           currentValue={deposit.toString()}
-          color='#000000'
+          color="#000000"
           fontSize={17}
-          bordercolor='#cccccc'
+          bordercolor="#cccccc"
         />
-        <TickerContainer>
-          $MATIC
-        </TickerContainer>
+        <TickerContainer>$USDT</TickerContainer>
       </InputContainer>
       <ButtonContainer>
-        <FillButton 
-          title={'Charge Deposit'} 
+        <FillButton
+          title={'Charge Deposit'}
           onClickHandler={async () => {
-            const { status, code } = await transfer({ to: data?.poolAddress , value: deposit })
-            
+            const { status, code } = await transfer({
+              to: data?.poolAddress,
+              value: deposit,
+            });
+
             if (!status) {
               handleLoadingState(false);
               handleModalState(`txFailed${code}`);
               setTimeout(() => {
                 handleModalState(undefined);
-              }, 2000)
-              return ;
+              }, 2000);
+              return;
             }
             handleLoadingState(true);
             if (userId) {
               const res = await setChallenge({
                 userId: userId,
-                challengeId: id
-            })
-            handleStatusCode(res?.status);
-            handleLoadingState(false);
-            if (res?.status === 409 || statusCode === 409) {
-              const userChallengeId = res?.data.userChallengeId;
-              setTimeout(() => {
-                router.push(`/challenge/my/detail/${userChallengeId}?state=my`)
-              }, 2500)
-              return ;
+                challengeId: id,
+              });
+              handleStatusCode(res?.status);
+              handleLoadingState(false);
+              if (res?.status === 409 || statusCode === 409) {
+                const userChallengeId = res?.data.userChallengeId;
+                setTimeout(() => {
+                  router.push(
+                    `/challenge/my/detail/${userChallengeId}?state=my`,
+                  );
+                }, 2500);
+                return;
+              }
+
+              if (res?.status === 200 || statusCode === 200) {
+                const userChallengeId = res?.data.userChallengeId;
+                handleModalState('Success');
+
+                setTimeout(() => {
+                  handleModalState(undefined);
+                  router.push(
+                    `/challenge/my/detail/${userChallengeId}?state=my`,
+                  );
+                }, 3000);
+              }
             }
-
-            if (res?.status === 200 || statusCode === 200) {
-              const userChallengeId = res?.data.userChallengeId;
-              handleModalState('Success');
-
-              setTimeout(() => {
-                handleModalState(undefined);
-                router.push(`/challenge/my/detail/${userChallengeId}?state=my`);
-              }, 3000)
-            }}
-          }} 
-          color={'#ffffff'} 
-          fontSize={17} 
-          backgroundcolor={'#000000'}          
+          }}
+          color={'#ffffff'}
+          fontSize={17}
+          backgroundcolor={'#000000'}
         />
       </ButtonContainer>
     </BaseModal>
-  )
-}
+  );
+};
 
 const ButtonContainer = styled.div`
   width: 90%;
@@ -171,14 +178,14 @@ const ButtonContainer = styled.div`
   &:hover {
     border: 1px solid #000000;
   }
-`
+`;
 
 const InputContainer = styled.div`
   width: 90%;
   height: 45px;
   margin: 10px auto 0 auto;
   position: relative;
-`
+`;
 
 const TickerContainer = styled.div`
   position: absolute;
@@ -188,11 +195,11 @@ const TickerContainer = styled.div`
   font-weight: 17px;
   font-weight: 400;
   color: #898989;
-`
+`;
 
 const BlockContainer = styled.div`
   width: 90%;
   margin: 0 auto;
-`
+`;
 
-export default ChargeDepositModal
+export default ChargeDepositModal;
