@@ -1,14 +1,14 @@
 import { WindowContext } from '@/context/window';
 import postPhoto from '@/lib/api/axios/feature/postPhoto';
 import { useRouter } from 'next/navigation';
-import React, { useContext, useState } from 'react'
-import styled from 'styled-components'
+import React, { useContext, useState } from 'react';
+import styled from 'styled-components';
 import { isMobile } from '@/utils/detectDeviceUtils';
 
 type Props = {
   onClickEvent: () => void;
   userChallengeId: string;
-}
+};
 
 const ImageUploader = ({ onClickEvent, userChallengeId }: Props) => {
   const router = useRouter();
@@ -18,7 +18,7 @@ const ImageUploader = ({ onClickEvent, userChallengeId }: Props) => {
 
   const onUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (detectDetive === false) {
-      return ;
+      return;
     }
     const file = e.target.files?.[0];
 
@@ -28,24 +28,21 @@ const ImageUploader = ({ onClickEvent, userChallengeId }: Props) => {
       reader.onload = () => {
         setImageSrc(reader.result);
       };
-      const res = await postPhoto(
-        userChallengeId, 
-        file
-      );
+      const res = await postPhoto(userChallengeId, file);
       if (res === undefined || res === null || res.status === 0) {
         router.push('/error');
-        return ;
+        return;
       }
       if (res.status === 200) {
         handleModalState('upload');
         setTimeout(() => {
           handleModalState(undefined);
           router.push(`/challenge/my/detail/${userChallengeId}?state=my`);
-        }, 3000)
+        }, 3000);
       }
     }
   };
-  
+
   return (
     <Container
       onClick={() => {
@@ -55,12 +52,13 @@ const ImageUploader = ({ onClickEvent, userChallengeId }: Props) => {
       }}
     >
       <input
-        id='image'
+        id="image"
         accept="image/*"
-        name='image'
+        name="image"
         type="file"
+        capture="camera"
         onChange={onUpload}
-        style={{ display: "none" }}
+        style={{ display: 'none' }}
       />
       <ButtonItem
         $color={detectDetive ? '#000' : '#ccc'}
@@ -69,8 +67,8 @@ const ImageUploader = ({ onClickEvent, userChallengeId }: Props) => {
         Complete Mission
       </ButtonItem>
     </Container>
-  )
-}
+  );
+};
 
 const Container = styled.div`
   position: fixed;
@@ -82,10 +80,10 @@ const Container = styled.div`
   max-width: 500px;
   margin: 0 auto;
   color: #ffffff;
-`
+`;
 
 const ButtonItem = styled.label<{
-  $color: string
+  $color: string;
 }>`
   font-size: 18px;
   width: 100%;
@@ -97,7 +95,6 @@ const ButtonItem = styled.label<{
   background-color: ${(props) => props.$color};
   border: 1px solid ${(props) => props.$color};
   border-radius: 20px;
-`
+`;
 
-
-export default ImageUploader
+export default ImageUploader;
