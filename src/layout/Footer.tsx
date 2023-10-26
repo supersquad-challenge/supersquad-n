@@ -1,12 +1,12 @@
-import React, { useContext, useEffect, useState } from 'react'
-import styled from 'styled-components'
-import { LuFlag } from 'react-icons/lu'
-import Profile from '@/components/base/Profile/Profile'
-import { usePathname } from 'next/navigation'
-import { useRouter } from 'next/navigation'
-import { AuthContext } from '@/context/auth'
-import { WindowContext } from '@/context/window'
-import { AiOutlineSearch } from "react-icons/ai";
+import React, { useContext, useEffect, useState } from 'react';
+import styled from 'styled-components';
+import { LuFlag } from 'react-icons/lu';
+import Profile from '@/components/base/Profile/Profile';
+import { usePathname } from 'next/navigation';
+import { useRouter } from 'next/navigation';
+import { AuthContext } from '@/context/auth';
+import { WindowContext } from '@/context/window';
+import { AiOutlineSearch } from 'react-icons/ai';
 
 const FooterContainer = styled.footer`
   width: 100%;
@@ -22,9 +22,9 @@ const FooterContainer = styled.footer`
   background-color: #000000;
   border-radius: 5px;
   z-index: 99;
-`
+`;
 
-const FooterItem = styled.div<{display: string}>`
+const FooterItem = styled.div<{ display: string }>`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -34,7 +34,7 @@ const FooterItem = styled.div<{display: string}>`
   &:hover {
     cursor: pointer;
   }
-`
+`;
 
 const FooterTitle = styled.div`
   display: flex;
@@ -44,7 +44,7 @@ const FooterTitle = styled.div`
   color: #ffffff;
   font-size: 12px;
   font-weight: 500;
-`
+`;
 
 const Footer = () => {
   const pathname = usePathname();
@@ -53,84 +53,69 @@ const Footer = () => {
   const { handleModalState } = useContext(WindowContext);
 
   const handlePageState = () => {
-    if (pathname === "/challenge") {
-      return 0
-    } else if (pathname === "/challenge/my") {
-      return 1
+    if (pathname === '/challenge') {
+      return 0;
+    } else if (pathname === '/challenge/my') {
+      return 1;
     } else {
-      return 2
+      return 2;
     }
-  }
- 
+  };
+
   const [pageState, setPageState] = useState<number>(handlePageState());
 
   useEffect(() => {
     setPageState(handlePageState());
-  }, [pathname])
+  }, [pathname]);
 
   return (
     <FooterContainer>
       <FooterItem
         onClick={() => {
-          const path = "/challenge"
-          router.push(`${path}`)
+          const path = '/challenge';
+          router.push(`${path}`);
         }}
-        display={pageState === 0 ? "block" : "none"}
+        display={pageState === 0 ? 'block' : 'none'}
       >
-        <AiOutlineSearch
-          color="#ffffff"
-          size="25"
-        />
-        <FooterTitle>
-          Explore
-        </FooterTitle>
+        <AiOutlineSearch color="#ffffff" size="25" />
+        <FooterTitle>Explore</FooterTitle>
       </FooterItem>
       <FooterItem
         onClick={() => {
-          const path = "/challenge/my"
+          const path = '/challenge/my';
           if (isLogin) {
-            router.push(`${path}`)
+            router.push(`${path}`);
           } else {
             handleModalState('login');
             setTimeout(() => {
               handleModalState(undefined);
-            }, 2400)
+            }, 2400);
           }
         }}
-        display={pageState === 1 ? "block" : "none"}
+        display={pageState === 1 ? 'block' : 'none'}
       >
-        <LuFlag
-          color="#ffffff"
-          size="25"
-        />
-        <FooterTitle>      
-          My Challenges
-        </FooterTitle>
+        <LuFlag color="#ffffff" size="25" />
+        <FooterTitle>My Challenges</FooterTitle>
       </FooterItem>
       <FooterItem
         onClick={() => {
-          const path = "/mypage"
+          const path = '/mypage';
           if (isLogin) {
-            router.push(`${path}`)
+            router.push(`${path}`);
           } else {
             handleModalState('login');
             setTimeout(() => {
               handleModalState(undefined);
-            }, 2400)   
+            }, 2400);
           }
         }}
-        display={pageState === 2 ? "block" : "none"}
+        display={pageState === 2 ? 'block' : 'none'}
       >
-        <Profile
-          color='#ffffff'
-          size={26}
-        />
-        <FooterTitle>
-          Profile
-        </FooterTitle>
+        <Profile color="#ffffff" size={26} />
+        <FooterTitle>Profile</FooterTitle>
       </FooterItem>
     </FooterContainer>
-  )
-}
+  );
+};
 
-export default Footer
+export default Footer;

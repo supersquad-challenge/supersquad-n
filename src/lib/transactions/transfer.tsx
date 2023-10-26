@@ -81,9 +81,10 @@ const changeChain = async () => {
 //   if (ethereum !== undefined) {
 //     const web3 = new Web3(ethereum);
 //     const USDTcontract = new web3.eth.Contract(USDTabi, USDTAddress);
-//     const poolcontract = new web3.eth.Contract(poolabi, poolAddress);
 //     const account = localStorage.getItem('walletAddress');
 //     const valueAmount = web3.utils.toWei(value.toString(), 'ether');
+//     console.log(valueAmount);
+//     console.log(USDTcontract);
 //     if (account !== undefined) {
 //       try {
 //         await USDTcontract.methods

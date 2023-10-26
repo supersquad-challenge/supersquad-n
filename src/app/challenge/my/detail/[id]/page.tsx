@@ -1,6 +1,6 @@
-"use client"
-import { usePathname, useRouter, useSearchParams } from 'next/navigation'
-import React, { useContext, useEffect, useState } from 'react'
+'use client';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import React, { useContext, useEffect, useState } from 'react';
 import Image from 'next/image';
 import styled from 'styled-components';
 import { colors } from '@/styles/color';
@@ -20,99 +20,82 @@ const MyDetail = () => {
   const router = useRouter();
   const query = params.get('state');
   const userChallengeId = pathname.split('/')[4];
-  const { isLogin } = useContext(AuthContext)
+  const { isLogin } = useContext(AuthContext);
   const { modalState, handleModalState } = useContext(WindowContext);
 
-  const [current, setCurrent] = useState<string | null>(query)
+  const [current, setCurrent] = useState<string | null>(query);
   useEffect(() => {
     if (!isLogin) {
       router.push('/signup');
     }
     setCurrent(query);
-  }, [query])
+  }, [query]);
 
   const handleDetectDevice = () => {
     handleModalState('onlyMobile');
     setTimeout(() => {
       handleModalState(undefined);
-    }, 1500)
-  }
-  
+    }, 1500);
+  };
+
   return (
     <PageContainer>
       <ImageContainer>
         <Image
           src={'/default/diet_thumbnail.svg'}
-          alt='challenge thumbnail'
+          alt="challenge thumbnail"
           fill
           style={{
-              objectFit: "cover"
-            }}
+            objectFit: 'cover',
+          }}
           priority={true}
-
         />
       </ImageContainer>
-      <MyNavigation
-        current={current}
+      <MyNavigation current={current} />
+      {current === 'my' && (
+        <PageInner>
+          <PageTitle>My Status</PageTitle>
+          <My id={userChallengeId} />
+        </PageInner>
+      )}
+      {current === 'total' && (
+        <PageInner>
+          <PageTitle>Total Status</PageTitle>
+          <Total id={userChallengeId} />
+        </PageInner>
+      )}
+      {current === 'about' && (
+        <PageInner>
+          <PageTitle>Info</PageTitle>
+          <About id={userChallengeId} />
+        </PageInner>
+      )}
+      <ImageUploader
+        onClickEvent={() => {
+          handleDetectDevice();
+        }}
+        userChallengeId={userChallengeId}
       />
-        {current === 'my' && (
-          <PageInner>
-            <PageTitle>
-                My Status
-            </PageTitle>
-            <My
-              id={userChallengeId}
-            />
-          </PageInner>
-        )}
-        {current === 'total' && (
-          <PageInner>
-            <PageTitle>
-                Total Status
-            </PageTitle>
-            <Total
-              id={userChallengeId}
-            />
-          </PageInner>
-        )}
-        {current === 'about' && (
-          <PageInner>
-            <PageTitle>
-                Info
-            </PageTitle>
-            <About
-              id={userChallengeId}
-            />
-          </PageInner>
-        )}
-        <ImageUploader 
-          onClickEvent={() => {
-            handleDetectDevice();
-          }}
-          userChallengeId={userChallengeId}
-        />
       {modalState === 'upload' && (
         <SuccessModal
-          title='Congrats!'
-          detail='You have completed today’s challenge'
-          buttonTitle='Check Your Status'
+          title="Congrats!"
+          detail="You have completed today’s challenge"
+          buttonTitle="Check Your Status"
         />
       )}
       {modalState === 'onlyMobile' && (
-        <PopupModal
-          title='Can authenticate mobile'
-        />
+        <PopupModal title="Can authenticate mobile" />
       )}
     </PageContainer>
-  )
-}
+  );
+};
 
 const PageContainer = styled.main`
   width: 100%;
   height: auto;
   margin-bottom: 120px;
   position: relative;
-`
+`;
 
 const PageTitle = styled.div`
   @media (max-width: 600px) {
@@ -129,14 +112,14 @@ const PageTitle = styled.div`
   }
   font-weight: 800;
   color: ${colors.black};
-`
+`;
 
 const PageInner = styled.section`
   width: 90%;
   margin: 25px auto 0 auto;
   display: flex;
   flex-direction: column;
-`
+`;
 
 const ImageContainer = styled.section`
   width: 100%;
@@ -149,6 +132,6 @@ const ImageContainer = styled.section`
   @media (max-width: 370px) {
     height: 200px;
   }
-`
-  
-export default MyDetail
+`;
+
+export default MyDetail;
