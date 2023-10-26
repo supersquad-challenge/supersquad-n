@@ -13,6 +13,7 @@ import { WindowContext } from '@/context/window';
 import SuccessModal from '@/components/base/modal/SuccessModal';
 import { AuthContext } from '@/context/auth';
 import PopupModal from '@/components/base/modal/PopupModal';
+import { getChallengeThumbnail } from '@/lib/api/querys/user/getChallengeThumbnail';
 
 const MyDetail = () => {
   const pathname = usePathname();
@@ -22,8 +23,25 @@ const MyDetail = () => {
   const userChallengeId = pathname.split('/')[4];
   const { isLogin } = useContext(AuthContext);
   const { modalState, handleModalState } = useContext(WindowContext);
+  const [thumbnailUrl, setThumbnailUrl] = useState('');
 
   const [current, setCurrent] = useState<string | null>(query);
+
+  const isValidUrl = (url: string) => {
+    if (url === '') return false;
+    if (url.includes('mtistory')) return true;
+    return false;
+  };
+
+  useEffect(() => {
+    const fetchThumbnail = async () => {
+      const url = await getChallengeThumbnail({ userChallengeId });
+      setThumbnailUrl(url);
+    };
+
+    fetchThumbnail();
+  }, [userChallengeId]);
+
   useEffect(() => {
     if (!isLogin) {
       router.push('/signup');
@@ -42,8 +60,12 @@ const MyDetail = () => {
     <PageContainer>
       <ImageContainer>
         <Image
-          src={'/default/diet_thumbnail.svg'}
-          alt="challenge thumbnail"
+          src={
+            isValidUrl(thumbnailUrl!)
+              ? thumbnailUrl
+              : '/default/diet_thumbnail.svg'
+          }
+          alt="challenge"
           fill
           style={{
             objectFit: 'cover',
