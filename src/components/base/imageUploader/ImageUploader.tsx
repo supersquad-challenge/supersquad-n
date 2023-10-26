@@ -56,7 +56,7 @@ const ImageUploader = ({ onClickEvent, userChallengeId }: Props) => {
         accept="image/*"
         name="image"
         type="file"
-        capture="camera"
+        capture="environment"
         onChange={onUpload}
         style={{ display: 'none' }}
       />
