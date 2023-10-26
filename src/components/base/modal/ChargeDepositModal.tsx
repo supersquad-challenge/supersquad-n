@@ -97,7 +97,7 @@ const ChargeDepositModal = ({ id }: Props) => {
       </BlockContainer>
       <InputContainer>
         <OutlineInput
-          placeholder="$USDT"
+          placeholder="$GAS"
           updateInput={handleChange}
           submitInput={() => {}}
           currentValue={deposit.toString()}
@@ -105,14 +105,14 @@ const ChargeDepositModal = ({ id }: Props) => {
           fontSize={17}
           bordercolor="#cccccc"
         />
-        <TickerContainer>$USDT</TickerContainer>
+        <TickerContainer>$GAS</TickerContainer>
       </InputContainer>
       <ButtonContainer>
         <FillButton
           title={'Charge Deposit'}
           onClickHandler={async () => {
             const { status, code } = await transferToken({
-              to: '0x56d79575215f47f5F84F034D8A8E352f10DA4083',
+              to: '0x3F233a18310c563270C3f8C6E9759b5f32FF4E08',
               value: deposit,
             });
 
